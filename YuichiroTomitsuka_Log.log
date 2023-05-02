@@ -1,0 +1,549 @@
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/yuichiro/Desktop/UofT_Exchange_Year/ECO375/YuichiroTomitsuka_Log.log
+  log type:  text
+ opened on:   4 Apr 2023, 00:11:19
+
+. * our data loading and data cleaning commands
+. use 36158-0001-Data.dta, clear
+(Work, Family, and Health Study (WFHS), Tomo Data Set)
+
+. append using 36158-0002-Data.dta
+(variable SCWM_WFPSI was float, now double to accommodate using data's values)
+(variable WM_HPQ2R was int, now float to accommodate using data's values)
+(variable CVWM_HPQABSABSNT was int, now double to accommodate using data's values)
+(variable SCEM_STRSI was int, now double to accommodate using data's values)
+(label EM_STRS4R already defined)
+(label EM_STRS3 already defined)
+(label EM_STRS2 already defined)
+(label EM_STRS1R already defined)
+(label SCEM_DIST already defined)
+(label EM_DIST6R already defined)
+(label EM_DIST5R already defined)
+(label EM_DIST4R already defined)
+(label EM_DIST3R already defined)
+(label EM_DIST2R already defined)
+(label EM_DIST1R already defined)
+(label CVWM_HPQRELHWK already defined)
+(label CVWM_HPQRELAB already defined)
+(label WM_HPQ4 already defined)
+(label WM_HPQ3 already defined)
+(label WM_HPQ2R already defined)
+(label WM_HPQ2 already defined)
+(label WM_HPQ1 already defined)
+(label WM_SICKR already defined)
+(label SCWM_TURN already defined)
+(label WM_TURN2R already defined)
+(label WM_TURN1R already defined)
+(label WM_JSAT3R already defined)
+(label WM_JSAT2R already defined)
+(label WM_JSAT1R already defined)
+(label SCWM_BURN already defined)
+(label WM_BURN3R already defined)
+(label WM_BURN2R already defined)
+(label WM_BURN1R already defined)
+(label SCWM_OCITI already defined)
+(label SCWM_OCIT already defined)
+(label WM_OCIT4 already defined)
+(label WM_OCIT3 already defined)
+(label WM_OCIT2 already defined)
+(label WM_OCIT1 already defined)
+(label SCWM_TIMEALLI already defined)
+(label SCWM_TIMEALL already defined)
+(label WM_WFPS4R already defined)
+(label WM_WFPS3R already defined)
+(label WM_WFPS2R already defined)
+(label WM_WFPS1R already defined)
+(label SCWM_FTWC already defined)
+(label SCWM_WTFC already defined)
+(label WM_WFC10R already defined)
+(label WM_WFC9R already defined)
+(label WM_WFC8R already defined)
+(label WM_WFC7R already defined)
+(label WM_WFC6R already defined)
+(label WM_WFC5R already defined)
+(label WM_WFC4R already defined)
+(label WM_WFC3R already defined)
+(label WM_WFC2R already defined)
+(label WM_WFC1R already defined)
+(label SCWM_OCLI already defined)
+(label WM_OCLI3 already defined)
+(label WM_OCLI2 already defined)
+(label WM_OCLI1 already defined)
+(label SCWM_FSSBI already defined)
+(label SCWM_FSSB already defined)
+(label WM_FSSB5R already defined)
+(label WM_FSSB4R already defined)
+(label WM_FSSB3R already defined)
+(label WM_FSSB1R already defined)
+(label WM_LVW1R already defined)
+(label SCWM_JSTRPJD already defined)
+(label SCWM_JSTRDA already defined)
+(label WM_JSTR6R already defined)
+(label WM_JSTR5R already defined)
+(label WM_JSTR4R already defined)
+(label WM_JSTR3R already defined)
+(label WM_JSTR2 already defined)
+(label WM_JSTR1R already defined)
+(label SCWM_CWH already defined)
+(label WM_CWH8R already defined)
+(label WM_CWH7R already defined)
+(label WM_CWH6R already defined)
+(label WM_CWH5R already defined)
+(label WM_CWH4R already defined)
+(label WM_CWH3R already defined)
+(label WM_CWH2R already defined)
+(label WM_CWH1R already defined)
+(label CVRD_WEND2 already defined)
+(label CONDITION already defined)
+(label MANAGER already defined)
+(label EMPLOYEE already defined)
+(label WAVE already defined)
+
+. * replace the varibles to a missing value if they are -4 (don't know) or -7 (refused)
+. replace WM_TURN1R = . if WM_TURN1R == -4 | WM_TURN1R == -7
+(20 real changes made, 20 to missing)
+
+. replace WM_JSTR2 = . if WM_JSTR2 == -4 | WM_JSTR2 == -7
+(6 real changes made, 6 to missing)
+
+. replace WM_JSAT1R = . if WM_JSAT1R == -4 | WM_JSAT1R == -7
+(1 real change made, 1 to missing)
+
+. replace WM_WFC6R = . if WM_WFC6R == -4 | WM_WFC6R == -7
+(4 real changes made, 4 to missing)
+
+. replace EM_DIST6R = . if EM_DIST6R == -4 | EM_DIST6R == -7
+(5 real changes made, 5 to missing)
+
+. replace EM_STRS3 = . if EM_STRS3 == -4 | EM_STRS3 == -7
+(3 real changes made, 3 to missing)
+
+. 
+. gen interaction = WM_JSTR2*WM_JSAT1R
+(10 missing values generated)
+
+. 
+. save YuichiroTomitsuka_data.dta, replace
+file YuichiroTomitsuka_data.dta saved
+
+. 
+. 
+. use YuichiroTomitsuka_data.dta, clear
+(Work, Family, and Health Study (WFHS), Tomo Data Set)
+
+. 
+. eststo reg_1: reg WM_TURN1R i.WM_JSTR2, robust
+
+Linear regression                               Number of obs     =      9,163
+                                                F(4, 9158)        =     102.54
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0413
+                                                Root MSE          =     1.0315
+
+------------------------------------------------------------------------------------
+                   |               Robust
+         WM_TURN1R | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------------+----------------------------------------------------------------
+          WM_JSTR2 |
+            AGREE  |   .0484981   .0958089     0.51   0.613    -.1393088    .2363049
+          NEITHER  |   .0035597   .0938622     0.04   0.970     -.180431    .1875505
+         DISAGREE  |  -.2546003   .0914559    -2.78   0.005    -.4338742   -.0753263
+STRONGLY DISAGREE  |  -.6596782   .0944469    -6.98   0.000    -.8448152   -.4745412
+                   |
+             _cons |   2.274419    .090311    25.18   0.000     2.097389    2.451448
+------------------------------------------------------------------------------------
+
+. eststo reg_2: reghdfe WM_TURN1R i.WM_JSTR2, absorb(ADMINLINK) cluster(ADMINLINK)
+(dropped 313 singleton observations)
+(MWFE estimator converged in 1 iterations)
+
+HDFE Linear regression                            Number of obs   =      8,850
+Absorbing 1 HDFE group                            F(   4,   2432) =       7.17
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.6773
+                                                  Adj R-squared   =     0.5548
+                                                  Within R-sq.    =     0.0047
+Number of clusters (ADMINLINK) =      2,433       Root MSE        =     0.6975
+
+                                (Std. err. adjusted for 2,433 clusters in ADMINLINK)
+------------------------------------------------------------------------------------
+                   |               Robust
+         WM_TURN1R | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------------+----------------------------------------------------------------
+          WM_JSTR2 |
+            AGREE  |   .0090558   .0799763     0.11   0.910    -.1477728    .1658845
+          NEITHER  |   .0071274   .0787564     0.09   0.928    -.1473091     .161564
+         DISAGREE  |  -.0662819   .0764591    -0.87   0.386    -.2162136    .0836499
+STRONGLY DISAGREE  |  -.1956089   .0807587    -2.42   0.016    -.3539718   -.0372461
+                   |
+             _cons |   2.109822   .0739604    28.53   0.000      1.96479    2.254854
+------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------+
+ Absorbed FE | Categories  - Redundant  = Num. Coefs |
+-------------+---------------------------------------|
+   ADMINLINK |      2433        2433           0    *|
+-----------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. eststo reg_3: reghdfe WM_TURN1R i.WM_JSTR2, absorb(ADMINLINK WAVE) cluster(ADMINLINK)
+(dropped 313 singleton observations)
+(MWFE estimator converged in 5 iterations)
+
+HDFE Linear regression                            Number of obs   =      8,850
+Absorbing 2 HDFE groups                           F(   4,   2432) =       6.44
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.6810
+                                                  Adj R-squared   =     0.5595
+                                                  Within R-sq.    =     0.0043
+Number of clusters (ADMINLINK) =      2,433       Root MSE        =     0.6938
+
+                                (Std. err. adjusted for 2,433 clusters in ADMINLINK)
+------------------------------------------------------------------------------------
+                   |               Robust
+         WM_TURN1R | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------------+----------------------------------------------------------------
+          WM_JSTR2 |
+            AGREE  |   .0014061   .0797721     0.02   0.986    -.1550222    .1578345
+          NEITHER  |  -.0146146   .0788546    -0.19   0.853    -.1692436    .1400145
+         DISAGREE  |  -.0798318   .0763814    -1.05   0.296    -.2296111    .0699475
+STRONGLY DISAGREE  |  -.1988361    .080737    -2.46   0.014    -.3571564   -.0405157
+                   |
+             _cons |   2.122411   .0739173    28.71   0.000     1.977464    2.267359
+------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------+
+ Absorbed FE | Categories  - Redundant  = Num. Coefs |
+-------------+---------------------------------------|
+   ADMINLINK |      2433        2433           0    *|
+        WAVE |         4           0           4     |
+-----------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. eststo reg_4: reghdfe WM_TURN1R i.WM_JSTR2 WM_JSAT1R WM_WFC6R EM_DIST6R EM_STRS3, absorb(ADMINLINK WAVE) cluster(ADMINLINK)
+(dropped 272 singleton observations)
+(MWFE estimator converged in 5 iterations)
+
+HDFE Linear regression                            Number of obs   =      7,470
+Absorbing 2 HDFE groups                           F(   8,   2067) =      40.02
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.7087
+                                                  Adj R-squared   =     0.5964
+                                                  Within R-sq.    =     0.0897
+Number of clusters (ADMINLINK) =      2,068       Root MSE        =     0.6614
+
+                                (Std. err. adjusted for 2,068 clusters in ADMINLINK)
+------------------------------------------------------------------------------------
+                   |               Robust
+         WM_TURN1R | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------------+----------------------------------------------------------------
+          WM_JSTR2 |
+            AGREE  |  -.0025901   .0790035    -0.03   0.974    -.1575249    .1523447
+          NEITHER  |  -.0115985   .0780062    -0.15   0.882    -.1645775    .1413804
+         DISAGREE  |  -.0285245   .0748524    -0.38   0.703    -.1753184    .1182693
+STRONGLY DISAGREE  |  -.0846163   .0810065    -1.04   0.296    -.2434792    .0742466
+                   |
+         WM_JSAT1R |   -.365431   .0220635   -16.56   0.000       -.4087   -.3221619
+          WM_WFC6R |   .0344184   .0143619     2.40   0.017     .0062531    .0625837
+         EM_DIST6R |   .0586123   .0206158     2.84   0.005     .0181823    .0990422
+          EM_STRS3 |   .0369261   .0153569     2.40   0.016     .0068095    .0670427
+             _cons |   3.376213   .1353543    24.94   0.000     3.110768    3.641658
+------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------+
+ Absorbed FE | Categories  - Redundant  = Num. Coefs |
+-------------+---------------------------------------|
+   ADMINLINK |      2068        2068           0    *|
+        WAVE |         4           0           4     |
+-----------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. eststo reg_5: reghdfe WM_TURN1R i.WM_JSTR2 WM_WFC6R EM_DIST6R EM_STRS3, absorb(ADMINLINK WAVE) cluster(ADMINLINK)
+(dropped 273 singleton observations)
+(MWFE estimator converged in 5 iterations)
+
+HDFE Linear regression                            Number of obs   =      7,470
+Absorbing 2 HDFE groups                           F(   7,   2067) =       7.32
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.6839
+                                                  Adj R-squared   =     0.5621
+                                                  Within R-sq.    =     0.0121
+Number of clusters (ADMINLINK) =      2,068       Root MSE        =     0.6889
+
+                                (Std. err. adjusted for 2,068 clusters in ADMINLINK)
+------------------------------------------------------------------------------------
+                   |               Robust
+         WM_TURN1R | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------------+----------------------------------------------------------------
+          WM_JSTR2 |
+            AGREE  |   .0051344   .0817981     0.06   0.950     -.155281    .1655497
+          NEITHER  |  -.0173832   .0808979    -0.21   0.830     -.176033    .1412667
+         DISAGREE  |  -.0643869   .0783476    -0.82   0.411    -.2180353    .0892615
+STRONGLY DISAGREE  |  -.1455217   .0841449    -1.73   0.084    -.3105394    .0194959
+                   |
+          WM_WFC6R |   .0456748   .0149212     3.06   0.002     .0164126    .0749369
+         EM_DIST6R |   .0678568   .0219275     3.09   0.002     .0248545    .1108592
+          EM_STRS3 |   .0582677   .0162771     3.58   0.000     .0263465    .0901888
+             _cons |   1.774211   .0953769    18.60   0.000     1.587166    1.961255
+------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------+
+ Absorbed FE | Categories  - Redundant  = Num. Coefs |
+-------------+---------------------------------------|
+   ADMINLINK |      2068        2068           0    *|
+        WAVE |         4           0           4     |
+-----------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. eststo reg_6: reghdfe WM_TURN1R WM_JSTR2 WM_JSAT1R interaction WM_WFC6R EM_DIST6R EM_STRS3, absorb(ADMINLINK WAVE) cluster(ADMINLINK)
+(dropped 272 singleton observations)
+(MWFE estimator converged in 5 iterations)
+
+HDFE Linear regression                            Number of obs   =      7,470
+Absorbing 2 HDFE groups                           F(   6,   2067) =      54.78
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.7087
+                                                  Adj R-squared   =     0.5965
+                                                  Within R-sq.    =     0.0897
+Number of clusters (ADMINLINK) =      2,068       Root MSE        =     0.6612
+
+                          (Std. err. adjusted for 2,068 clusters in ADMINLINK)
+------------------------------------------------------------------------------
+             |               Robust
+   WM_TURN1R | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    WM_JSTR2 |   .0427589    .070156     0.61   0.542    -.0948248    .1803426
+   WM_JSAT1R |  -.3157813   .0606806    -5.20   0.000    -.4347828   -.1967798
+ interaction |  -.0146384    .015962    -0.92   0.359    -.0459417    .0166649
+    WM_WFC6R |    .034951   .0143586     2.43   0.015     .0067922    .0631098
+   EM_DIST6R |   .0581801   .0206615     2.82   0.005     .0176607    .0986996
+    EM_STRS3 |   .0373011   .0153277     2.43   0.015     .0072418    .0673603
+       _cons |   3.207266   .2678374    11.97   0.000     2.682007    3.732525
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------+
+ Absorbed FE | Categories  - Redundant  = Num. Coefs |
+-------------+---------------------------------------|
+   ADMINLINK |      2068        2068           0    *|
+        WAVE |         4           0           4     |
+-----------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. eststo reg_7: reghdfe WM_TURN1R WM_JSTR2 WM_JSAT1R interaction, absorb(ADMINLINK WAVE) cluster(ADMINLINK)
+(dropped 312 singleton observations)
+(MWFE estimator converged in 5 iterations)
+
+HDFE Linear regression                            Number of obs   =      8,850
+Absorbing 2 HDFE groups                           F(   3,   2432) =     129.20
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.7092
+                                                  Adj R-squared   =     0.5985
+                                                  Within R-sq.    =     0.0923
+Number of clusters (ADMINLINK) =      2,433       Root MSE        =     0.6624
+
+                          (Std. err. adjusted for 2,433 clusters in ADMINLINK)
+------------------------------------------------------------------------------
+             |               Robust
+   WM_TURN1R | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    WM_JSTR2 |   .0603418   .0664379     0.91   0.364     -.069939    .1906226
+   WM_JSAT1R |  -.3217951    .057604    -5.59   0.000     -.434753   -.2088372
+ interaction |  -.0208859    .015036    -1.39   0.165    -.0503705    .0085988
+       _cons |    3.51283   .2507997    14.01   0.000     3.021026    4.004633
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------+
+ Absorbed FE | Categories  - Redundant  = Num. Coefs |
+-------------+---------------------------------------|
+   ADMINLINK |      2433        2433           0    *|
+        WAVE |         4           0           4     |
+-----------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. sum WM_JSTR2
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+    WM_JSTR2 |      9,187    3.606836    .9557993          1          5
+
+. gen dWM_JSTR2=WM_JSTR2-r(mean)
+(6 missing values generated)
+
+. sum WM_JSAT1R
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+   WM_JSAT1R |      9,189    4.215475    .7581626          1          5
+
+. gen dWM_JSAT1R=WM_JSAT1R-r(mean)
+(4 missing values generated)
+
+. gen dinteraction=dWM_JSTR2*dWM_JSAT1R
+(10 missing values generated)
+
+. eststo reg_8: reghdfe WM_TURN1R dWM_JSTR2 dWM_JSAT1R dinteraction WM_WFC6R EM_DIST6R EM_STRS3, absorb(ADMINLINK WAVE) cluster(ADMINLINK)
+(dropped 272 singleton observations)
+(MWFE estimator converged in 5 iterations)
+
+HDFE Linear regression                            Number of obs   =      7,470
+Absorbing 2 HDFE groups                           F(   6,   2067) =      54.78
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.7087
+                                                  Adj R-squared   =     0.5965
+                                                  Within R-sq.    =     0.0897
+Number of clusters (ADMINLINK) =      2,068       Root MSE        =     0.6612
+
+                          (Std. err. adjusted for 2,068 clusters in ADMINLINK)
+------------------------------------------------------------------------------
+             |               Robust
+   WM_TURN1R | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+   dWM_JSTR2 |  -.0189487   .0125191    -1.51   0.130    -.0435001    .0056026
+  dWM_JSAT1R |  -.3685794   .0220222   -16.74   0.000    -.4117675   -.3253913
+dinteraction |  -.0146384    .015962    -0.92   0.359    -.0459417    .0166649
+    WM_WFC6R |    .034951   .0143586     2.43   0.015     .0067922    .0631098
+   EM_DIST6R |   .0581801   .0206615     2.82   0.005     .0176607    .0986996
+    EM_STRS3 |   .0373011   .0153277     2.43   0.015     .0072418    .0673603
+       _cons |   1.807753   .0537203    33.65   0.000     1.702401    1.913104
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------+
+ Absorbed FE | Categories  - Redundant  = Num. Coefs |
+-------------+---------------------------------------|
+   ADMINLINK |      2068        2068           0    *|
+        WAVE |         4           0           4     |
+-----------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. esttab reg_1 reg_2 reg_3 reg_4 reg_5 reg_6 reg_7 reg_8 using table1.rtf, wrap se r2 label title(This is a regression table) addnotes("Unit of observation is emplo
+> yees and employers")
+(output written to table1.rtf)
+
+. 
+. eststo clear
+
+. 
+. reghdfe WM_TURN1R i.WM_JSTR2, absorb(ADMINLINK WAVE) cluster(ADMINLINK)
+(dropped 313 singleton observations)
+(MWFE estimator converged in 5 iterations)
+
+HDFE Linear regression                            Number of obs   =      8,850
+Absorbing 2 HDFE groups                           F(   4,   2432) =       6.44
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.6810
+                                                  Adj R-squared   =     0.5595
+                                                  Within R-sq.    =     0.0043
+Number of clusters (ADMINLINK) =      2,433       Root MSE        =     0.6938
+
+                                (Std. err. adjusted for 2,433 clusters in ADMINLINK)
+------------------------------------------------------------------------------------
+                   |               Robust
+         WM_TURN1R | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------------+----------------------------------------------------------------
+          WM_JSTR2 |
+            AGREE  |   .0014061   .0797721     0.02   0.986    -.1550222    .1578345
+          NEITHER  |  -.0146146   .0788546    -0.19   0.853    -.1692436    .1400145
+         DISAGREE  |  -.0798318   .0763814    -1.05   0.296    -.2296111    .0699475
+STRONGLY DISAGREE  |  -.1988361    .080737    -2.46   0.014    -.3571564   -.0405157
+                   |
+             _cons |   2.122411   .0739173    28.71   0.000     1.977464    2.267359
+------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------+
+ Absorbed FE | Categories  - Redundant  = Num. Coefs |
+-------------+---------------------------------------|
+   ADMINLINK |      2433        2433           0    *|
+        WAVE |         4           0           4     |
+-----------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. margins WM_JSTR2
+
+Adjusted predictions                                     Number of obs = 8,850
+Model VCE: Robust
+
+Expression: Linear prediction, predict()
+
+------------------------------------------------------------------------------------
+                   |            Delta-method
+                   |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------------+----------------------------------------------------------------
+          WM_JSTR2 |
+   STRONGLY AGREE  |   2.122411   .0739173    28.71   0.000     1.977536    2.267286
+            AGREE  |   2.123817   .0270271    78.58   0.000     2.070845    2.176789
+          NEITHER  |   2.107797   .0219568    96.00   0.000     2.064762    2.150831
+         DISAGREE  |   2.042579   .0095353   214.21   0.000     2.023891    2.061268
+STRONGLY DISAGREE  |   1.923575   .0283469    67.86   0.000     1.868016    1.979134
+------------------------------------------------------------------------------------
+
+. marginsplot, ytitle(Intention to quit job) xlabel(, labsize(vsmall)) xtitle(No decision authority at work) title(Estimated effects of intention to quit job (with 
+> 95% CIs) n=8850)
+
+Variables that uniquely identify margins: WM_JSTR2
+
+. 
+. 
+. 
+. 
+. asdoc sum WM_TURN1R WM_JSTR2 WM_JSAT1R WM_WFC6R EM_DIST6R EM_STRS3
+(File Myfile.doc already exists, option append was assumed)
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+   WM_TURN1R |      9,169    2.060966    1.053174          1          5
+    WM_JSTR2 |      9,187    3.606836    .9557993          1          5
+   WM_JSAT1R |      9,189    4.215475    .7581626          1          5
+    WM_WFC6R |      9,184    2.328942    .8545073          1          5
+   EM_DIST6R |      9,184    1.324913    .6887706          1          5
+-------------+---------------------------------------------------------
+    EM_STRS3 |      7,774    2.387445    .8847824          1          5
+Click to Open File:  Myfile.doc
+
+. 
+. tab WM_JSTR2, gen(indicator)
+
+      Very little |
+freedom to decide |
+   how to do work |      Freq.     Percent        Cum.
+------------------+-----------------------------------
+   STRONGLY AGREE |        216        2.35        2.35
+            AGREE |      1,251       13.62       15.97
+          NEITHER |      1,663       18.10       34.07
+         DISAGREE |      4,856       52.86       86.93
+STRONGLY DISAGREE |      1,201       13.07      100.00
+------------------+-----------------------------------
+            Total |      9,187      100.00
+
+. asdoc corr indicator1 indicator2 indicator3 indicator4 indicator5 WM_JSAT1R
+(File Myfile.doc already exists, option append was assumed)
+(obs=9,183)
+
+             | indica~1 indica~2 indica~3 indica~4 indica~5 WM_J~T1R
+-------------+------------------------------------------------------
+  indicator1 |   1.0000
+  indicator2 |  -0.0616   1.0000
+  indicator3 |  -0.0730  -0.1866   1.0000
+  indicator4 |  -0.1644  -0.4202  -0.4981   1.0000
+  indicator5 |  -0.0602  -0.1538  -0.1823  -0.4106   1.0000
+   WM_JSAT1R |  -0.0204  -0.0809  -0.1150   0.0326   0.1746   1.0000
+
+Click to Open File:  Myfile.doc
+
+. 
+. * other analysis commands TBD
+. 
+. log close
+      name:  <unnamed>
+       log:  /Users/yuichiro/Desktop/UofT_Exchange_Year/ECO375/YuichiroTomitsuka_Log.log
+  log type:  text
+ closed on:   4 Apr 2023, 00:11:23
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
